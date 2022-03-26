@@ -1,4 +1,4 @@
-const server = require('./src/Config/server')
-require('./src/Config/database')
-require('./src/Config/routes')(server)
+const server = require("./src/Config/server")
+require("./src/Config/database")
+require("./src/Config/routes")(server)
 // require('./src/Mqtt/mqttService')
