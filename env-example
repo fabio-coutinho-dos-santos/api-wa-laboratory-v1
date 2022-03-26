@@ -1,0 +1,12 @@
+NODE_ENV=development
+
+# Server
+SERVER_PORT=3000
+
+# DB
+DB_HOST=db-wa
+#DB_HOST=0.0.0.0
+DB_PORT=27017
+DB_NAME=nodeauth
+DB_USER=nodeauth
+DB_PASS=nodeauth

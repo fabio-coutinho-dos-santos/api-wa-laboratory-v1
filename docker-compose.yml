@@ -1,0 +1,51 @@
+version: "3.1"
+services:
+  db-template:
+    image: mongo:4.2
+    container_name: db-template
+    # restart: always
+    ports:
+      - ${DB_PORT}:27017
+    environment:
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    volumes:
+      - mongodbdata:/data/db
+    networks:
+        - net-template
+
+  api-template:
+    image: node:10.14.0
+    container_name: api-template
+    # restart: always
+    env_file:
+     - .env
+    depends_on:
+      - db-template
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    networks:
+        - net-template
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm start" 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+networks:
+  net-template:
+    external:
+      name: net-template
+    # driver: "bridge"
+
+
+volumes:
+  mongodbdata:
+    driver: local
