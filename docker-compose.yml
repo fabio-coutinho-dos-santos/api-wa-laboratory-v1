@@ -1,8 +1,8 @@
 version: "3.1"
 services:
-  db-template:
+  db-wa:
     image: mongo:4.2
-    container_name: db-template
+    container_name: db-wa
     # restart: always
     ports:
       - ${DB_PORT}:27017
@@ -15,20 +15,20 @@ services:
     volumes:
       - mongodbdata:/data/db
     networks:
-        - net-template
+        - net-wa
 
-  api-template:
+  api-wa:
     image: node:10.14.0
-    container_name: api-template
+    container_name: api-wa
     # restart: always
     env_file:
      - .env
     depends_on:
-      - db-template
+      - db-wa
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     networks:
-        - net-template
+        - net-wa
     volumes:
       - .:/usr/src/app
     working_dir: /usr/src/app
@@ -40,9 +40,9 @@ services:
         max-file: "5"
 
 networks:
-  net-template:
+  net-wa:
     external:
-      name: net-template
+      name: net-wa
     # driver: "bridge"
 
 
