@@ -44,4 +44,22 @@ Laboratory.route("count",(req,resp) => {
 })
 
 
+Laboratory.route("active",(req,resp) => {
+	try{
+		Laboratory.aggregate([
+			{$match:{status:"Active"}}],
+		function (err, laboratoriesActives) {
+			if(err) {
+				return resp.status(500).json({errors:[err]})
+			}else{
+				resp.json((laboratoriesActives))
+			}
+		})
+	}
+	catch(e){
+		console.log(`[Exception captured] = ${e}`)
+	}
+})
+
+
 module.exports = Laboratory

@@ -13,15 +13,26 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 })
 
 
-test( `Test Post Laboratory ${URL_TEST}`,()=>{
+// test( `Test Post Laboratory ${URL_TEST}`,()=>{
+// 	return request (URL_TEST)
+// 		.post("/api/laboratory")
+// 		.send({
+// 			name:"",
+// 			address:"",
+// 			status:"Inactive"
+// 		})
+// 		.then(response => {
+// 			expect(response.status).toBe(201)
+// 		})
+// })
+
+
+test( `Test Get list actives Laboratories ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.post("/api/laboratory")
-		.send({
-			name:"",
-			address:"",
-			status:"Active"
-		})
+		.get("/api/laboratory/active")
 		.then(response => {
-			expect(response.status).toBe(201)
+			expect(response.status).toBe(200)
+			expect(response.body).toBeInstanceOf(Array)
+
 		})
 })
