@@ -11,3 +11,17 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 			expect(response.body).toBeInstanceOf(Array)
 		})
 })
+
+
+test( `Test Post Laboratory ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/laboratory")
+		.send({
+			name:"",
+			address:"",
+			status:"Active"
+		})
+		.then(response => {
+			expect(response.status).toBe(201)
+		})
+})
