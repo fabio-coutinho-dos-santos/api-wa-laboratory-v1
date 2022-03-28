@@ -10,4 +10,7 @@ module.exports = function(server)
 
 	const examService = require("../Model/Exam/examService")
 	examService.register(api,"/exam")
+
+	const associationService = require("../Model/Association/AssociationService")
+	associationService.register(api,"/association")
 }
