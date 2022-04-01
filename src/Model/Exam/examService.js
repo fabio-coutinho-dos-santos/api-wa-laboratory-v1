@@ -27,14 +27,15 @@ function parseErrors(nodeRestfulErrors)
 	return errors
 }
 
-Exam.route("count",(req,resp) => {
+Exam.route("actives",(req,resp) => {
 	try{
-		Exam.count((error, value)=>{
-			if(error){
-				resp.status(500).json({errors:[error]})
-				resp.next()
+		Exam.aggregate([
+			{$match:{status:"Active"}}],
+		function (err, examActives) {
+			if(err) {
+				return resp.status(500).json({errors:[err]})
 			}else{
-				resp.json({value})
+				resp.json((examActives))
 			}
 		})
 	}
@@ -43,5 +44,40 @@ Exam.route("count",(req,resp) => {
 	}
 })
 
+Exam.route("remove",(req,resp) => {
+	try{
+		const idExam = req.body.idExam
+		validateFieldBlanc(idExam).then((response)=>{
+			if(response){
+				Exam.updateOne(
+					{ _id: idExam },
+					{ $set: { "status": "Inactive" } },(err)=>{
+						if(err) {
+							resp.status(500).json({errors:[err]})
+						}
+						else{
+							resp.status(200).json({response:["Exame removido com sucesso!"]})
+						}
+					}
+				)
+			}else{
+				resp.status(500).json({errors:["Campo vazio!"]})
+			}
+		})
+	}
+	catch(e){
+		resp.status(500).json([{errors:"Erro ao remover exame!"}])
+	}
+})
+
+let validateFieldBlanc = (idExam) =>{
+	return new Promise (resolve =>{
+		if(idExam === "" || idExam === null || idExam === undefined){
+			resolve(false)
+		}else{
+			resolve(true)
+		}
+	})
+}
 
 module.exports = Exam

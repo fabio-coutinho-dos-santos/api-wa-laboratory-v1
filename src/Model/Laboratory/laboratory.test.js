@@ -50,6 +50,20 @@ test( `Test PUT Laboratory with id stored ${URL_TEST}`,()=>{
 		})
 })
 
+
+test( `Test PUT laboratory field status wrong ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.put("/api/laboratory/6244d5508571c005beaee5f2")
+		.send({
+			"name": "laboratory Test",
+			"address": "test",
+			"status": "Actives"
+		})
+		.then(response => {
+			expect(response.status).toBe(500)
+		})
+})
+
 test( `Test PUT Laboratory with false id ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.put("/api/laboratory/6242227d4ae0a")
