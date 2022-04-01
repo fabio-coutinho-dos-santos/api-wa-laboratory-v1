@@ -29,107 +29,83 @@ function parseErrors(nodeRestfulErrors)
 	return errors
 }
 
-Association.route("count",(req,resp) => {
-	try{
-		Association.count((error, value)=>{
-			if(error){
-				resp.status(500).json({errors:[error]})
-				resp.next()
-			}else{
-				resp.json({value})
-			}
-		})
-	}
-	catch(e){
-		console.log(`[Exception captured] = ${e}`)
-	}
-})
+// ================================================================= Functions to save association ==================================================================
 
 Association.route("save",(req,resp) => {
 
 	const idExam = req.body.idExam
 	const idLaboratory = req.body.idLaboratory
 
-	findExam(idExam).then((respExam)=>{
-		console.log(respExam)
-		findLaboratory(idLaboratory).then((respLaboratpry)=>{
-			console.log(respExam)
-			if(respExam == 200 && respLaboratpry == 200){
-				resp.status(200).send("Ok")
-			}else{
-				resp.status(500).send("Error")
-			}
-		})
-	})
-})
-
-
-let findExam = (idExam) => {
-	let ObjectID = require("mongodb").ObjectID
-	return new Promise(resolve => {
+	try{
+		let ObjectID = require("mongodb").ObjectID
 		Exam.aggregate([
 			{$match:{status:"Active"}},
 			{$match:{_id:ObjectID(idExam)}}
 		],
 		function (err, exam) {
 			if(err) {
-				resolve(501)
+				resp.status(500).json({errors:[err]})
 			}else if(exam == ""){
-				resolve(502)
+				resp.status(501).json({errors:["Este exame não está cadastrado!"]})
 			}else{
-				console.log(exam)
-				resolve(200)
+				Laboratory.aggregate([
+					{$match:{status:"Active"}},
+					{$match:{_id:ObjectID(idLaboratory)}}
+				],
+				function (err, exam) {
+					if(err) {
+						resp.status(500).json({errors:[err]})
+					}else if(exam == ""){
+						resp.status(501).json({errors:["Este laboratório não está cadastrado!"]})
+					}else{
+						let association = new Association({idExam:idExam,idLaboratory:idLaboratory})
+						checkIfThereAreAssociation(idExam,idLaboratory).then((response)=>{
+							if(!response){
+								association.save(err=>{
+									if(err){
+										resp.status(500).json({errors:[err]})
+									}else{
+										resp.status(201).json({Response:["Exame cadastrado com sucesso!"]})
+									}
+								})
+							}else{
+								resp.status(501).json({errors:["Este exame ja ésta vinculado a este laboratório!"]})
+							}
+						})
+						
+					}
+				})
 			}
 		})
-	// 	Exam.findById({_id:idExam},(err, exam)=>{
-	// 		if(err) {
-	// 			resolve(400)
-	// 		}else if(exam){
-	// 			if(exam == "")
-	// 				resolve(500)
-	// 			else{
-	// 				Exam.aggregate([
-	// 					{$match:{status:"Active"}},
-	// 					{$match:{_id:ObjectID(idExam)}}
-	// 				],
-	// 				function (err, exam) {
-	// 					if(err) {
-	// 						resolve(501)
-	// 					}else if(exam == ""){
-	// 						resolve(502)
-	// 					}else{
-	// 						console.log(exam)
-	// 						resolve(200)
-	// 					}
-	// 				})
-	// 			}	
-	// 		}else{
-	// 			resolve(400)
-	// 		}
-	// 	})
-	})
-}
+	}catch(e){
+		resp.status(500).json([{errors:"Erro ao vincular exame ao laboratório!"}])
+	}
 
-let findLaboratory = (idlaboratory) => {
+})
 
-	return new Promise(resolve => {
 
-		Laboratory.findById({_id:idlaboratory},(err, lab)=>{
+// check if there are association with idExam an idLaboratory
+let checkIfThereAreAssociation = (idExam,idLaboratory) =>{ 
+
+	return new Promise (resolve=>{
+		Association.aggregate([
+			{$match:{idExam:idExam}},
+			{$match:{idLaboratory:idLaboratory}}
+		],
+		function (err, exam) {
 			if(err) {
-				resolve(400)
-			}else if(lab){
-				if(lab == "")
-					resolve(500)
-				else{
-					resolve(200)
-				}	
+				resolve(true)
+			}else if(exam == ""){
+				resolve(false)
 			}else{
-				resolve(400)
+				resolve(true)
 			}
 		})
 	})
+	
 }
 
+// ===============================================================================================================================================================
 
 
 module.exports = Association
