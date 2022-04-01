@@ -27,22 +27,6 @@ function parseErrors(nodeRestfulErrors)
 	return errors
 }
 
-Laboratory.route("count",(req,resp) => {
-	try{
-		Laboratory.count((error, value)=>{
-			if(error){
-				resp.status(500).json({errors:[error]})
-				resp.next()
-			}else{
-				resp.json({value})
-			}
-		})
-	}
-	catch(e){
-		console.log(`[Exception captured] = ${e}`)
-	}
-})
-
 
 Laboratory.route("actives",(req,resp) => {
 	try{
