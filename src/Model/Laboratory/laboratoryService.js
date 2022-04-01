@@ -44,7 +44,7 @@ Laboratory.route("count",(req,resp) => {
 })
 
 
-Laboratory.route("active",(req,resp) => {
+Laboratory.route("actives",(req,resp) => {
 	try{
 		Laboratory.aggregate([
 			{$match:{status:"Active"}}],

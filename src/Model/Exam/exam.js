@@ -2,7 +2,7 @@ const restful = require("node-restful")
 const monggose = require("mongoose")
 
 const examchema = new monggose.Schema({
-	name:{type:String,require:true},
+	name:{type:String,require:true,min:3},
 	type:{type:String,require:true,
 		enum: {
 			values:["Analysis","Clinic","Image"],

@@ -12,14 +12,14 @@ test( `Test Association - ${URL_TEST}`,()=>{
 		})
 })
 
-test( `Test Post Association - ${URL_TEST}`,()=>{
-	return request (URL_TEST)
-		.post("/api/association")
-		.send({
-			idExam:"",
-			idLaboratory:"",
-		})
-		.then(response => {
-			expect(response.status).toBe(201)
-		})
-})
+// test( `Test Post Association - ${URL_TEST}`,()=>{
+// 	return request (URL_TEST)
+// 		.post("/api/association")
+// 		.send({
+// 			idExam:"",
+// 			idLaboratory:"",
+// 		})
+// 		.then(response => {
+// 			expect(response.status).toBe(201)
+// 		})
+// })

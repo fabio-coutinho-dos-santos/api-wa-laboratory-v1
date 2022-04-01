@@ -29,7 +29,7 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 
 test( `Test Get list actives Laboratories ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.get("/api/laboratory/active")
+		.get("/api/laboratory/actives")
 		.then(response => {
 			expect(response.status).toBe(200)
 			expect(response.body).toBeInstanceOf(Array)

@@ -12,15 +12,15 @@ test( `Test Exam - ${URL_TEST}`,()=>{
 		})
 })
 
-test( `Test Post Exam - ${URL_TEST}`,()=>{
-	return request (URL_TEST)
-		.post("/api/exam")
-		.send({
-			name:"",
-			type:"Image",
-			status:"Active"
-		})
-		.then(response => {
-			expect(response.status).toBe(201)
-		})
-})
+// test( `Test Post Exam - ${URL_TEST}`,()=>{
+// 	return request (URL_TEST)
+// 		.post("/api/exam")
+// 		.send({
+// 			name:"",
+// 			type:"Image",
+// 			status:"Inactive"
+// 		})
+// 		.then(response => {
+// 			expect(response.status).toBe(201)
+// 		})
+// })
