@@ -38,7 +38,7 @@ test( `Test Post Association with idExam blank - ${URL_TEST}`,()=>{
 		})
 })
 
-test( `Test Post Association with idLaboratory blak - ${URL_TEST}`,()=>{
+test( `Test Post Association with idLaboratory blank - ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/association/save")
 		.send({
@@ -57,7 +57,7 @@ test( `Test Post Association that there are - ${URL_TEST}`,()=>{
 		.post("/api/association/save")
 		.send({
 			idExam:"6242280f11949e0615e9da33",
-			idLaboratory:"6242254f1677ae0543d2ac28",
+			idLaboratory:"624221fe7cc0a501e9794d2e",
 		})
 		.then(response => {
 			expect(response.status).toBe(501)

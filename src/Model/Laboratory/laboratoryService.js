@@ -45,5 +45,40 @@ Laboratory.route("actives",(req,resp) => {
 	}
 })
 
+Laboratory.route("remove",(req,resp) => {
+	try{
+		const idLaboratory = req.body.idLaboratory
+		validateFieldBlanc(idLaboratory).then((response)=>{
+			if(response){
+				Laboratory.updateOne(
+					{ _id: idLaboratory },
+					{ $set: { "status": "Inactive" } },(err)=>{
+						if(err) {
+							resp.status(500).json({errors:[err]})
+						}
+						else{
+							resp.status(200).json({response:["Laboratório removido com sucesso!"]})
+						}
+					}
+				)
+			}else{
+				resp.status(500).json({errors:["Campo vazio!"]})
+			}
+		})
+	}
+	catch(e){
+		resp.status(500).json([{errors:"Erro ao remover laboratório!"}])
+	}
+})
+
+let validateFieldBlanc = (idLaboratory) =>{
+	return new Promise (resolve =>{
+		if(idLaboratory === "" || idLaboratory === null || idLaboratory === undefined){
+			resolve(false)
+		}else{
+			resolve(true)
+		}
+	})
+}
 
 module.exports = Laboratory

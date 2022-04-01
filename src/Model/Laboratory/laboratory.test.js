@@ -30,6 +30,71 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 
 // =====================================================================================================================================================================
 
+
+// =================================================================== Test PUT Route ==================================================================================
+
+
+test( `Test PUT Laboratory with id stored ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.put("/api/laboratory/6242227d4ae0a902b281ed1d")
+		.send({
+			"name": "Test2",
+			"address": "Test,Test2",
+			"status": "Active"
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
+			expect(response.body.name).toBe("Test2")
+			expect(response.body.address).toBe("Test,Test2")
+			expect(response.body.status).toBe("Active")
+		})
+})
+
+test( `Test PUT Laboratory with false id ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.put("/api/laboratory/6242227d4ae0a")
+		.send({
+			"name": "Test2",
+			"address": "Test,Test2",
+			"status": "Active"
+		})
+		.then(response => {
+			expect(response.status).toBe(500)
+		})
+})
+
+// =====================================================================================================================================================================
+
+// =================================================================== Test Remove Route ==================================================================================
+
+
+test( `Test Laboratory chage status to inactive with empty field ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/laboratory/remove")
+		.send({
+			idLaboratory:"",
+		})
+		.then(response => {
+			expect(response.status).toBe(500)
+		})
+})
+
+test( `Test Laboratory chage status to inactive correctly ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/laboratory/remove")
+		.send({
+			idLaboratory:"6242254f1677ae0543d2ac28",
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
+			expect(response.body.response[0]).toBe("Laboratório removido com sucesso!")
+		})
+})
+
+
+// =====================================================================================================================================================================
+
+
 // =================================================================== Test Post Route ==================================================================================
 
 test( `Test Post Laboratory Fields empty ${URL_TEST}`,()=>{
