@@ -31,7 +31,7 @@ function parseErrors(nodeRestfulErrors)
 
 // ================================================================= Functions to save association ==================================================================
 
-Association.route("save",(req,resp) => {
+Association.route("connect",(req,resp) => {
 	try{
 		const idExam = req.body.idExam
 		const idLaboratory = req.body.idLaboratory
@@ -102,8 +102,7 @@ let validateBlankIds = (idExam,idLaboratory)=>{
 			resolve(false)
 		}
 	})
-}
-	
+}	
 
 // check if there are association with idExam an idLaboratory
 let checkIfThereAreAssociation = (idExam,idLaboratory) =>{ 
