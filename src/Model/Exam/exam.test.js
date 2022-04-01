@@ -13,6 +13,17 @@ test( `Test get all exams Exam - ${URL_TEST}`,()=>{
 })
 
 
+
+test( `Test get all actives Exams by name - ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.get("/api/exam/getActivesByName?name=Exam Test")
+		.then(response => {
+			expect(response.status).toBe(200)
+			expect(response.body).toBeInstanceOf(Array)
+		})
+})
+
+
 // =================================================================== Test Acives Route ==================================================================================
 
 test( `Test Get list actives Exams ${URL_TEST}`,()=>{

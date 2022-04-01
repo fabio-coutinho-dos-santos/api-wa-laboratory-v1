@@ -27,6 +27,7 @@ function parseErrors(nodeRestfulErrors)
 	return errors
 }
 
+//route to return actives exams
 Exam.route("actives",(req,resp) => {
 	try{
 		Exam.aggregate([
@@ -40,9 +41,12 @@ Exam.route("actives",(req,resp) => {
 		})
 	}
 	catch(e){
-		console.log(`[Exception captured] = ${e}`)
+		resp.status(500).json([{errors:"Error on get actives exams!"}])
 	}
 })
+
+
+// ================================================================= Functions to remove exam ==================================================================
 
 Exam.route("remove",(req,resp) => {
 	try{
@@ -79,5 +83,35 @@ let validateFieldBlanc = (idExam) =>{
 		}
 	})
 }
+
+// =============================================================================================================================================================
+
+
+// ================================================================= Functions to remove exam ==================================================================
+Exam.route("getActivesByName",(req,resp)=>{
+
+	const name = req.query.name
+	console.log(name)
+
+	try{
+		Exam.aggregate([
+			{$match:
+				{
+					name:name,
+					status:"Active"
+				}}],
+		function (err, examsActives) {
+			if(err) {
+				return resp.status(500).json({errors:[err]})
+			}else{
+				resp.json((examsActives))
+			}
+		})
+	}
+	catch(e){
+		resp.status(500).json([{errors:"Error on get actives exams by nam!"}])
+	}
+
+})
 
 module.exports = Exam
