@@ -217,7 +217,7 @@ test( `Test Post exam correctly ${URL_TEST}`,()=>{
 
 test( `Test Post batch exams correctly ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.post("/api/exam/batch")
+		.post("/api/exam/saveBatch")
 		.send({
 			exams:[{
 				name:"Test",
@@ -232,6 +232,21 @@ test( `Test Post batch exams correctly ${URL_TEST}`,()=>{
 		.then(response => {
 			expect(response.status).toBe(200)
 			expect(response.body.response[0]).toBe("Exams stored successfully!")
+		})
+})
+
+
+test( `Test delet batch exams correctly ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/exam/deleteBatch")
+		.send({
+			ids:[
+				"624227d41957aa05b389b99a",
+				"624227d41957aa05b389b99a"
+			]
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
 		})
 })
 

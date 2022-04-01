@@ -113,7 +113,9 @@ Exam.route("getActivesByName",(req,resp)=>{
 
 })
 
-Exam.route("batch",(req,resp)=>{
+
+//route to save a batch of exams
+Exam.route("saveBatch",(req,resp)=>{
 
 	try{
 	
@@ -122,9 +124,7 @@ Exam.route("batch",(req,resp)=>{
 		for(let i=0; i<exams.length; i++)
 		{
 			let exam = new Exam(exams[i])
-			console.log(exam)
 			exam.save((err)=>{
-			
 				if(err){
 					return resp.status(500).json({errors:[err]})
 				}
@@ -138,5 +138,32 @@ Exam.route("batch",(req,resp)=>{
 		resp.status(500).json([{errors:"Error on stored exams!" + e}])
 	}
 })
+
+//route to delete a batch exams
+Exam.route("deleteBatch",(req,resp)=>{
+	let cont=0
+	try{
+		const ids = req.body.ids
+
+		for(let i=0; i<ids.length; i++)
+		{
+			Exam.find({_id:ids[i]}).remove((err,exam)=>{
+				console.log(exam.deletedCount)
+				cont += exam.deletedCount
+				if(err){
+					return resp.status(500).json({errors:[err]})
+				}else{
+					if(i == ids.length-1){
+						resp.status(200).json({response:[cont+" exams deleted successfully!"]})
+					}
+				}
+			})
+		} 
+
+	}catch(e){
+		resp.status(500).json([{errors:"Error on stored exams!" + e}])
+	}
+})
+
 
 module.exports = Exam
