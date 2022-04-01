@@ -86,8 +86,7 @@ let validateFieldBlanc = (idExam) =>{
 
 // =============================================================================================================================================================
 
-
-// ================================================================= Functions to remove exam ==================================================================
+//route to return actives exams by name
 Exam.route("getActivesByName",(req,resp)=>{
 
 	const name = req.query.name
@@ -112,6 +111,32 @@ Exam.route("getActivesByName",(req,resp)=>{
 		resp.status(500).json([{errors:"Error on get actives exams by nam!"}])
 	}
 
+})
+
+Exam.route("batch",(req,resp)=>{
+
+	try{
+	
+		const exams = req.body.exams
+
+		for(let i=0; i<exams.length; i++)
+		{
+			let exam = new Exam(exams[i])
+			console.log(exam)
+			exam.save((err)=>{
+			
+				if(err){
+					return resp.status(500).json({errors:[err]})
+				}
+				if(i == exams.length-1){
+					resp.status(200).json({response:["Exams stored successfully!"]})
+				}
+			})
+		} 
+
+	}catch(e){
+		resp.status(500).json([{errors:"Error on stored exams!" + e}])
+	}
 })
 
 module.exports = Exam

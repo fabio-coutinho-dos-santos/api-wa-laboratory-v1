@@ -215,5 +215,26 @@ test( `Test Post exam correctly ${URL_TEST}`,()=>{
 		})
 })
 
+test( `Test Post batch exams correctly ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/exam/batch")
+		.send({
+			exams:[{
+				name:"Test",
+				type:"Image",
+				status:"Inactive"
+			},{
+				name:"Test",
+				type:"Image",
+				status:"Inactive"
+			}]
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
+			expect(response.body.response[0]).toBe("Exams stored successfully!")
+		})
+})
+
+
 // ===================================================================+++++++++++++++++==================================================================================
 
