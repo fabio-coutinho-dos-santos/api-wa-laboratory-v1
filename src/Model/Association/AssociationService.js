@@ -32,49 +32,54 @@ function parseErrors(nodeRestfulErrors)
 // ================================================================= Functions to save association ==================================================================
 
 Association.route("save",(req,resp) => {
-
-	const idExam = req.body.idExam
-	const idLaboratory = req.body.idLaboratory
-
 	try{
-		let ObjectID = require("mongodb").ObjectID
-		Exam.aggregate([
-			{$match:{status:"Active"}},
-			{$match:{_id:ObjectID(idExam)}}
-		],
-		function (err, exam) {
-			if(err) {
-				resp.status(500).json({errors:[err]})
-			}else if(exam == ""){
-				resp.status(501).json({errors:["Este exame não está cadastrado!"]})
-			}else{
-				Laboratory.aggregate([
+		const idExam = req.body.idExam
+		const idLaboratory = req.body.idLaboratory
+
+		validateBlankIds(idExam,idLaboratory).then((response)=>{
+			if(response){
+				let ObjectID = require("mongodb").ObjectID
+				Exam.aggregate([
 					{$match:{status:"Active"}},
-					{$match:{_id:ObjectID(idLaboratory)}}
+					{$match:{_id:ObjectID(idExam)}}
 				],
 				function (err, exam) {
 					if(err) {
 						resp.status(500).json({errors:[err]})
 					}else if(exam == ""){
-						resp.status(501).json({errors:["Este laboratório não está cadastrado!"]})
+						resp.status(501).json({errors:["Este exame não está cadastrado!"]})
 					}else{
-						let association = new Association({idExam:idExam,idLaboratory:idLaboratory})
-						checkIfThereAreAssociation(idExam,idLaboratory).then((response)=>{
-							if(!response){
-								association.save(err=>{
-									if(err){
-										resp.status(500).json({errors:[err]})
+						Laboratory.aggregate([
+							{$match:{status:"Active"}},
+							{$match:{_id:ObjectID(idLaboratory)}}
+						],
+						function (err, exam) {
+							if(err) {
+								resp.status(500).json({errors:[err]})
+							}else if(exam == ""){
+								resp.status(501).json({errors:["Este laboratório não está cadastrado!"]})
+							}else{
+								let association = new Association({idExam:idExam,idLaboratory:idLaboratory})
+								checkIfThereAreAssociation(idExam,idLaboratory).then((response)=>{
+									if(!response){
+										association.save(err=>{
+											if(err){
+												resp.status(500).json({errors:[err]})
+											}else{
+												resp.status(201).json({Response:["Exame cadastrado com sucesso!"]})
+											}
+										})
 									}else{
-										resp.status(201).json({Response:["Exame cadastrado com sucesso!"]})
+										resp.status(501).json({errors:["Este exame ja ésta vinculado a este laboratório!"]})
 									}
 								})
-							}else{
-								resp.status(501).json({errors:["Este exame ja ésta vinculado a este laboratório!"]})
+						
 							}
 						})
-						
 					}
 				})
+			}else{
+				resp.status(500).json({errors:["Campos vazios!"]})
 			}
 		})
 	}catch(e){
@@ -83,29 +88,49 @@ Association.route("save",(req,resp) => {
 
 })
 
+//check if fileds don't have blank
+let validateBlankIds = (idExam,idLaboratory)=>{
+
+	return new Promise (resolve =>{
+		try{
+			if(idExam === "" || idLaboratory ===""){
+				resolve(false)
+			}else{
+				resolve(true)
+			}
+		}catch(e){
+			resolve(false)
+		}
+	})
+}
+	
 
 // check if there are association with idExam an idLaboratory
 let checkIfThereAreAssociation = (idExam,idLaboratory) =>{ 
 
 	return new Promise (resolve=>{
-		Association.aggregate([
-			{$match:{idExam:idExam}},
-			{$match:{idLaboratory:idLaboratory}}
-		],
-		function (err, exam) {
-			if(err) {
-				resolve(true)
-			}else if(exam == ""){
-				resolve(false)
-			}else{
-				resolve(true)
-			}
-		})
+		try{
+			Association.aggregate([
+				{$match:{idExam:idExam}},
+				{$match:{idLaboratory:idLaboratory}}
+			],
+			function (err, exam) {
+				if(err) {
+					resolve(true)
+				}else if(exam == ""){
+					resolve(false)
+				}else{
+					resolve(true)
+				}
+			})
+		}catch(e){
+			resolve(false)
+		}
 	})
 	
 }
 
-// ===============================================================================================================================================================
+// ==================================================================================================================================================================
 
 
 module.exports = Association

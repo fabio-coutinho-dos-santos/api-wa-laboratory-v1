@@ -12,14 +12,55 @@ test( `Test Association - ${URL_TEST}`,()=>{
 		})
 })
 
-// test( `Test Post Association - ${URL_TEST}`,()=>{
-// 	return request (URL_TEST)
-// 		.post("/api/association")
-// 		.send({
-// 			idExam:"",
-// 			idLaboratory:"",
-// 		})
-// 		.then(response => {
-// 			expect(response.status).toBe(201)
-// 		})
-// })
+test( `Test Post Association with blank fields - ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/association/save")
+		.send({
+			idExam:"",
+			idLaboratory:"",
+		})
+		.then(response => {
+			expect(response.status).toBe(500)
+			expect(response.body.errors[0]).toBe("Campos vazios!")
+		})
+})
+
+test( `Test Post Association with idExam blank - ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/association/save")
+		.send({
+			idExam:"",
+			idLaboratory:"624221b27bc05f01ce2c9ce0",
+		})
+		.then(response => {
+			expect(response.status).toBe(500)
+			expect(response.body.errors[0]).toBe("Campos vazios!")
+		})
+})
+
+test( `Test Post Association with idLaboratory blak - ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/association/save")
+		.send({
+			idExam:"6242280f11949e0615e9da33",
+			idLaboratory:"",
+		})
+		.then(response => {
+			expect(response.status).toBe(500)
+			expect(response.body.errors[0]).toBe("Campos vazios!")
+		})
+})
+
+
+test( `Test Post Association that there are - ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/association/save")
+		.send({
+			idExam:"6242280f11949e0615e9da33",
+			idLaboratory:"6242254f1677ae0543d2ac28",
+		})
+		.then(response => {
+			expect(response.status).toBe(501)
+			expect(response.body.errors[0]).toBe("Este exame ja ésta vinculado a este laboratório!")
+		})
+})
