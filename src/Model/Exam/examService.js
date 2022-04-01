@@ -148,7 +148,6 @@ Exam.route("deleteBatch",(req,resp)=>{
 		for(let i=0; i<ids.length; i++)
 		{
 			Exam.find({_id:ids[i]}).remove((err,exam)=>{
-				console.log(exam.deletedCount)
 				cont += exam.deletedCount
 				if(err){
 					return resp.status(500).json({errors:[err]})

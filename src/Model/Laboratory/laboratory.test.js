@@ -181,6 +181,42 @@ test( `Test Post Laboratory correctly ${URL_TEST}`,()=>{
 		})
 })
 
+test( `Test Post batch laboratories correctly ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/laboratory/saveBatch")
+		.send({
+			laboratories:[{
+				name:"Test",
+				address:"Test",
+				status:"Inactive"
+			},{
+				name:"Test",
+				address:"Test",
+				status:"Inactive"
+			}]
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
+			expect(response.body.response[0]).toBe("Laboratories stored successfully!")
+		})
+})
+
+
+test( `Test delete batch laboratories correctly ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/laboratory/deleteBatch")
+		.send({
+			ids:[
+				"624227d41957aa05b389b99a",
+				"624227d41957aa05b389b99a"
+			]
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
+		})
+})
+
+
 // ===================================================================+++++++++++++++++==================================================================================
 
 

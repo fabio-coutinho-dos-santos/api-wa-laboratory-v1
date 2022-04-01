@@ -81,4 +81,53 @@ let validateFieldBlanc = (idLaboratory) =>{
 	})
 }
 
+
+Laboratory.route("saveBatch",(req,resp)=>{
+
+	try{
+	
+		const laboratories = req.body.laboratories
+
+		for(let i=0; i<laboratories.length; i++)
+		{
+			let laboratory = new Laboratory(laboratories[i])
+			laboratory.save((err)=>{
+				if(err){
+					return resp.status(500).json({errors:[err]})
+				}
+				if(i == laboratories.length-1){
+					resp.status(200).json({response:["Laboratories stored successfully!"]})
+				}
+			})
+		} 
+
+	}catch(e){
+		resp.status(500).json([{errors:"Error on stored Laboratories!" + e}])
+	}
+})
+
+Laboratory.route("deleteBatch",(req,resp)=>{
+	let cont=0
+	try{
+		const ids = req.body.ids
+
+		for(let i=0; i<ids.length; i++)
+		{
+			Laboratory.find({_id:ids[i]}).remove((err,exam)=>{
+				cont += exam.deletedCount
+				if(err){
+					return resp.status(500).json({errors:[err]})
+				}else{
+					if(i == ids.length-1){
+						resp.status(200).json({response:[cont+" laboratories deleted successfully!"]})
+					}
+				}
+			})
+		} 
+
+	}catch(e){
+		resp.status(500).json([{errors:"Error on stored laboratories!" + e}])
+	}
+})
+
 module.exports = Laboratory
