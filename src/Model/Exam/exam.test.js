@@ -253,3 +253,12 @@ test( `Test delet batch exams correctly ${URL_TEST}`,()=>{
 
 // ===================================================================+++++++++++++++++==================================================================================
 
+
+test( `Test route to get laboratories associated with a exam by exam name ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.get("/api/exam/getActivesByName?name=Exam Test2")
+		.then(response => {
+			expect(response.status).toBe(200)
+			expect(response.body).toBeInstanceOf(Array)
+		})
+})
