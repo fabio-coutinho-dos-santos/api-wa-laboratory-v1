@@ -56,8 +56,8 @@ test( `Test Post Association that there are - ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/association/connect")
 		.send({
-			idExam:"62564e23c2424a002a3cbcc8",
-			idLaboratory:"62564e23c2424a002a3cbcc0",
+			idExam:"62570bab947c790443126713",
+			idLaboratory:"62570b372b11f00434150d5a",
 		})
 		.then(response => {
 			expect(response.status).toBe(501)

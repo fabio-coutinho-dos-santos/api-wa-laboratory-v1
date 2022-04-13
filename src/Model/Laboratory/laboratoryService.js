@@ -130,4 +130,32 @@ Laboratory.route("deleteBatch",(req,resp)=>{
 	}
 })
 
+Laboratory.route("updateBatch",(req,resp)=>{
+
+	try{
+	
+		const laboratories = req.body.laboratories
+		for(let i=0; i<laboratories.length; i++)	
+		{
+			Laboratory.updateOne(
+				{ _id: laboratories[i]._id },
+				{ $set: { "status": laboratories[i].status , "address":laboratories[i].address, "name":laboratories[i].name} 
+				},(err)=>{
+					if(err) {
+						resp.status(500).json({errors:[err]})
+					}
+					else{
+						if(i == laboratories.length-1){
+							resp.status(200).json({response:["Laboratories updated successfully!"]})
+						}
+					}
+				}
+			)
+		} 
+
+	}catch(e){
+		resp.status(500).json([{errors:"Error on stored Laboratories!" + e}])
+	}
+})
+
 module.exports = Laboratory

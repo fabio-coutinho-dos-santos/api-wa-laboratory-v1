@@ -89,7 +89,9 @@ let validateFieldBlanc = (idExam) =>{
 
 // =============================================================================================================================================================
 
-//route to return actives exams by name
+// ============================================================ route to return actives exams by name =========================================================
+
+//
 Exam.route("getActivesByName",(req,resp)=>{
 	const name = req.query.name
 	console.log(name)
@@ -143,6 +145,8 @@ function getAllLaboratoryes(resp){
 	
 }
 
+// =============================================================================================================================================================
+
 
 //route to save a batch of exams
 Exam.route("saveBatch",(req,resp)=>{
@@ -187,6 +191,34 @@ Exam.route("deleteBatch",(req,resp)=>{
 					}
 				}
 			})
+		} 
+
+	}catch(e){
+		resp.status(500).json([{errors:"Error on deleted exams!" + e}])
+	}
+})
+
+Exam.route("updateBatch",(req,resp)=>{
+
+	try{
+	
+		const exams = req.body.exams
+		for(let i=0; i<exams.length; i++)	
+		{
+			Exam.updateOne(
+				{ _id: exams[i]._id },
+				{ $set: { "status": exams[i].status , "type":exams[i].type, "name":exams[i].name} 
+				},(err)=>{
+					if(err) {
+						resp.status(500).json({errors:[err]})
+					}
+					else{
+						if(i == exams.length-1){
+							resp.status(200).json({response:["Exams updated successfully!"]})
+						}
+					}
+				}
+			)
 		} 
 
 	}catch(e){

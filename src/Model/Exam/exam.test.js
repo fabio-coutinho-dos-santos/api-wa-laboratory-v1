@@ -14,16 +14,6 @@ test( `Test get all exams Exam - ${URL_TEST}`,()=>{
 
 
 
-test( `Test get all actives Exams by name - ${URL_TEST}`,()=>{
-	return request (URL_TEST)
-		.get("/api/exam/getActivesByName?name=Exam Test")
-		.then(response => {
-			expect(response.status).toBe(200)
-			expect(response.body).toBeInstanceOf(Array)
-		})
-})
-
-
 // =================================================================== Test Acives Route ==================================================================================
 
 test( `Test Get list actives Exams ${URL_TEST}`,()=>{
@@ -73,7 +63,7 @@ test( `Test exam chage status to inactive correctly ${URL_TEST}`,()=>{
 
 test( `Test PUT exam with id stored ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/exam/62564e23c2424a002a3cbcc8")
+		.put("/api/exam/62570bab947c790443126713")
 		.send({
 			"name": "Exam Test",
 			"type": "Clinic",
@@ -250,6 +240,26 @@ test( `Test delet batch exams correctly ${URL_TEST}`,()=>{
 		})
 })
 
+test( `Test update batch laboratories correctly ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/exam/updateBatch")
+		.send({
+			exams:[{
+				_id:"62570bab947c790443126713",
+				name:"Test",
+				type:"Image",
+				status:"Active"
+			},{
+				_id:"62570bab947c790443126713",
+				name:"Test",
+				type:"Image",
+				status:"Active"
+			}]
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
+		})
+})
 
 // ===================================================================+++++++++++++++++==================================================================================
 

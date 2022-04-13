@@ -36,7 +36,7 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 
 test( `Test PUT Laboratory with id stored ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/laboratory/62564e23c2424a002a3cbcc0")
+		.put("/api/laboratory/62570b3f2b11f00434150d5c")
 		.send({
 			"name": "Test2",
 			"address": "Test,Test2",
@@ -216,6 +216,26 @@ test( `Test delete batch laboratories correctly ${URL_TEST}`,()=>{
 		})
 })
 
+test( `Test update batch laboratories correctly ${URL_TEST}`,()=>{
+	return request (URL_TEST)
+		.post("/api/laboratory/updateBatch")
+		.send({
+			laboratories:[{
+				_id: "62570b372b11f00434150d5a",
+				name:"Test",
+				address:"Test",
+				status:"Active"
+			},{
+				_id: "62570b3f2b11f00434150d5c",
+				name:"Test",
+				address:"Test",
+				status:"Active"
+			}]
+		})
+		.then(response => {
+			expect(response.status).toBe(200)
+		})
+})
 
 // ===================================================================+++++++++++++++++==================================================================================
 
