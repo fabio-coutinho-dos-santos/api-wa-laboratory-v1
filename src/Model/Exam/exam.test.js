@@ -73,7 +73,7 @@ test( `Test exam chage status to inactive correctly ${URL_TEST}`,()=>{
 
 test( `Test PUT exam with id stored ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/exam/6244d5508571c005beaee5f2")
+		.put("/api/exam/62564e23c2424a002a3cbcc8")
 		.send({
 			"name": "Exam Test",
 			"type": "Clinic",

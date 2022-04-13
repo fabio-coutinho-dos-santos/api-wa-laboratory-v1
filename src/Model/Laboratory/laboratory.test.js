@@ -36,7 +36,7 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 
 test( `Test PUT Laboratory with id stored ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/laboratory/6242227d4ae0a902b281ed1d")
+		.put("/api/laboratory/62564e23c2424a002a3cbcc0")
 		.send({
 			"name": "Test2",
 			"address": "Test,Test2",

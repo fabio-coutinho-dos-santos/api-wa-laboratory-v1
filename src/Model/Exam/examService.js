@@ -1,5 +1,8 @@
 const Exam = require("./exam")
 const lodash = require("lodash")
+const Association = require("../Association/Association")
+const Laboratory = require("../Laboratory/laboratory")
+
 
 Exam.methods(["get","post","put","delete"])
 Exam.updateOptions({new:true, runValidators: true}) //necessário para retornar sempre o novo objeto e tambem validar os dados no método put
@@ -88,30 +91,57 @@ let validateFieldBlanc = (idExam) =>{
 
 //route to return actives exams by name
 Exam.route("getActivesByName",(req,resp)=>{
-
 	const name = req.query.name
 	console.log(name)
 
-	try{
-		Exam.aggregate([
-			{$match:
-				{
-					name:name,
-					status:"Active"
-				}}],
-		function (err, examsActives) {
+	Exam.findOne({name:name},function(err,exam){
+		if(err) {
+			return resp.status(500).json({errors:[err]})
+		}else{
+			if(!exam){
+				return resp.status(500).json({errors:["Exame não encontrado!"]})
+			}
+			else{
+				Association.aggregate([
+					{$match:
+						{idExam:exam.id}}
+				],(err,associations)=>{
+					if(err) {
+						return resp.status(500).json({errors:[err]})
+					}else{
+						let arrayLaboratories=[]
+						getAllLaboratoryes(resp).then((laboratories)=>{
+							laboratories.forEach(lab => {
+								associations.forEach(assocations=> {
+									if(lab._id == assocations.idLaboratory){
+										arrayLaboratories.push(lab)
+									}
+								})
+							})
+							resp.json(arrayLaboratories)
+						})
+					}
+				})
+
+			}
+		}
+	})
+
+})
+
+function getAllLaboratoryes(resp){
+
+	return new Promise(resolve =>{
+		Laboratory.find({},function(err,laboratories){
 			if(err) {
 				return resp.status(500).json({errors:[err]})
 			}else{
-				resp.json((examsActives))
+				resolve(laboratories)
 			}
 		})
-	}
-	catch(e){
-		resp.status(500).json([{errors:"Error on get actives exams by nam!"}])
-	}
-
-})
+	})
+	
+}
 
 
 //route to save a batch of exams
