@@ -18,9 +18,9 @@ services:
         - net-wa
 
   api-wa:
-    image: node:10.14.0
+    # image: node:10.14.0
     container_name: api-wa
-    # restart: always
+    build: .
     env_file:
      - .env
     depends_on:
@@ -29,10 +29,12 @@ services:
       - ${SERVER_PORT}:${SERVER_PORT}
     networks:
         - net-wa
+     #============ comment when to push to master branch ===============
     volumes:
-      - .:/usr/src/app
+      - .:/usr/src/app:rw
     working_dir: /usr/src/app
-    command: bash -c "npm install && npm start" 
+    #==================================================================
+    command: bash -c "npm start" 
     logging:
       driver: "json-file"
       options:

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "start-pm2": "pm2 start index.js",
     "start": "./node_modules/nodemon/bin/nodemon.js index.js",
     "swagger-autogen": "node swagger.js"
   },
