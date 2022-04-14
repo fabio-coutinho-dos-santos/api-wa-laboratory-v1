@@ -32,7 +32,7 @@ function parseErrors(nodeRestfulErrors)
 
 // ================================================================= Functions to save association ==================================================================
 
-Association.route("connect",(req,resp) => {
+Association.route("save",(req,resp) => {
 	try{
 		const idExam = req.body.idExam
 		const idLaboratory = req.body.idLaboratory
@@ -58,7 +58,7 @@ Association.route("connect",(req,resp) => {
 							if(err) {
 								resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 							}else if(exam == ""){
-								resp.status(HttpStatusCodes.code.BAD_REQUEST).json({errors:["Lboratory don't registered!"]})
+								resp.status(HttpStatusCodes.code.BAD_REQUEST).json({errors:["Laboratory don't registered!"]})
 							}else{
 								let association = new Association({idExam:idExam,idLaboratory:idLaboratory})
 								checkIfThereAreAssociation(idExam,idLaboratory).then((response)=>{
@@ -67,7 +67,7 @@ Association.route("connect",(req,resp) => {
 											if(err){
 												resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 											}else{
-												resp.status(HttpStatusCodes.code.SUCCESS).json({Response:["Exam registered successfully!"]})
+												resp.status(HttpStatusCodes.code.SUCCESS).json({Response:["Exam linked successfully!"]})
 											}
 										})
 									}else{

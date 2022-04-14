@@ -93,7 +93,7 @@ let validateFieldBlanc = (idExam) =>{
 // ============================================================ route to return actives exams by name =========================================================
 
 //
-Exam.route("getActivesByName",(req,resp)=>{
+Exam.route("getLaboratoriesByName",(req,resp)=>{
 	try{
 		const name = req.query.name
 		console.log(name)

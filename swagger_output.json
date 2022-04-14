@@ -11,5 +11,1011 @@
     "http",
     "https"
   ],
-  "paths": {}
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+
+    "/api/exam/":{
+      "get": {
+        "tags":["Exam"],
+        "summary": "Get all Exams",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+       "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ExamArray"
+            },
+            "description": "Exam found."
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+
+    "/api/exam":{
+      "post": {
+        "tags":["Exam"],
+        "summary": "Register a new exam",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+         "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Exam information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Exam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ExamArray"
+            },
+            "description": "Exam registered successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    
+    "/api/exam/actives":{
+      "get": {
+        "tags":["Exam"],
+        "summary": "Remove Exams actives",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+       "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ExamArray"
+            },
+            "description": "Exam found."
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+
+    "/api/exam/remove":{
+      "post": {
+        "tags":["Exam"],
+        "summary": "Get all Exams actives",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Exam information.",
+            "required": true,
+            "schema": {
+              "type":"object",
+              "properties": {
+                "idExam": {
+                  "type": "string",
+                  "example": "asdasd-23423-sd434sd-ffsdfsd"
+                }
+            },
+            "description": "Exam found."
+            }
+          }
+        ],
+       "responses": {
+          "200": {
+            "schema": {
+              "type":"object",
+              "properties": {
+                "response": {
+                  "type": "string",
+                  "example": "Exam removed successfully!"
+                }
+            },
+            "description": "Exam found."
+          }
+        }, "500": {
+          "description": "Error on to remove exam!"
+        }
+      }
+    }
+    },
+
+    "/api/exam/getLaboratoriesByName?name={name}":{
+      "get": {
+        "tags":["Exam"],
+        "summary": "Get all Laboratories linked withe exam by name exam",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Exam information.",
+            "required": true,
+            "schema": {
+              "type":"object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Exam Name"
+                }
+            },
+            "description": "Exam found."
+            }
+          }
+        ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/LaboratoryArray"
+          },
+          "description": "Laboratories found."
+        }, "500": {
+          "description": "Error on to get laboratories that have linked with this exam!"
+        }
+      }
+    }
+    },
+
+    "/api/exam/saveBatch":{
+      "post": {
+        "tags":["Exam"],
+        "summary": "Save exams in batch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Exam information.",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/ExamArrayBatch"
+              }
+          }
+        ],
+      "responses": {
+        "200": {
+          "schema": {
+            "type":"object",
+            "properties": {
+              "response": {
+                "type": "string",
+                "example": "Exams stored successfully!"
+              }
+          },
+          "description": "Exam found."
+        }
+        }, "500": {
+          "description": "Error on stored exams!"
+        }
+      }
+    }
+    },
+
+    "/api/exam/deleteBatch":{
+      "post": {
+        "tags":["Exam"],
+        "summary": "Delete exams in batch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Exam information.",
+            "required": true,
+            "type": "array",
+            "items":{
+              "type":"object",
+              "properties":
+              {
+                "ids":
+              {
+                "type": "array",
+                "items":{
+                  "type":"string",
+                  "example": "asdasd-23423-sd434sd-ffsdfsd"
+                }
+              }
+            }
+          }
+          }
+        ],
+      "responses": {
+        "200": {
+          "schema": {
+            "type":"object",
+            "properties": {
+              "response": {
+                "type": "string",
+                "example": "Exams deleted successfully!"
+              }
+          },
+          "description": "Exam found."
+        }
+        }, "500": {
+          "description": "Error on delete exams!"
+        }
+      }
+    }
+    },
+
+    "/api/exam/updateBatch":{
+      "post": {
+        "tags":["Exam"],
+        "summary": "Update exams in batch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Exam information.",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/ExamArrayBatch"
+              }
+          }
+        ],
+      "responses": {
+        "200": {
+          "schema": {
+            "type":"object",
+            "properties": {
+              "response": {
+                "type": "string",
+                "example": "Exams updated successfully!"
+              }
+          },
+          "description": "Exam found."
+        }
+        }, "500": {
+          "description": "Error updating exams!"
+        }
+      }
+    }
+    },
+
+    "/api/exam/{id}":{
+      "delete": {
+        "tags":["Exam"],
+        "summary": "Delete a specific exam",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Exam Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exam deleted successfully"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        
+        }
+      }
+
+    },
+
+    "/api/exam/{id}/":{
+      "put": {
+        "tags":["Exam"],
+        "summary": "Update a specific exam",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "Exam Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device updated successfully"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        
+        }
+      }
+
+    },
+  
+
+    "/api/laboratory/":{
+      "get": {
+        "tags":["Laboratory"],
+        "summary": "Get all Laboratories",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+       "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/LaboratoryArray"
+            },
+            "description": "Exam found."
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+
+    "/api/laboratory":{
+      "post": {
+        "tags":["Laboratory"],
+        "summary": "Register a new laboratory",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+         "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Laboratory information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Laboratory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/LaboratoryArray"
+            },
+            "description": "Laboratory registered successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/laboratory/actives":{
+      "get": {
+        "tags":["Laboratory"],
+        "summary": "Get all Laboratory actives",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+       "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/LaboratoryArray"
+            },
+            "description": "Laboratory found."
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+
+    "/api/laboratory/remove":{
+      "post": {
+        "tags":["Laboratory"],
+        "summary": "Remove Laboratories actives",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Laboratory information.",
+            "required": true,
+            "schema": {
+              "type":"object",
+              "properties": {
+                "idExam": {
+                  "type": "string",
+                  "example": "asdasd-23423-sd434sd-ffsdfsd"
+                }
+            },
+            "description": "Laboratory found."
+            }
+          }
+        ],
+       "responses": {
+          "200": {
+            "schema": {
+              "type":"object",
+              "properties": {
+                "response": {
+                  "type": "string",
+                  "example": "Exam removed successfully!"
+                }
+            },
+            "description": "Exam found."
+          }
+        }, "500": {
+          "description": "Error on to remove exam!"
+        }
+      }
+    }
+    },
+
+    "/api/laboratory/saveBatch":{
+      "post": {
+        "tags":["Laboratory"],
+        "summary": "Save laboratories in batch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Laboratory information.",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/LaboratoryArrayBatch"
+              }
+          }
+        ],
+      "responses": {
+        "200": {
+          "schema": {
+            "type":"object",
+            "properties": {
+              "response": {
+                "type": "string",
+                "example": "Laboratories stored successfully!"
+              }
+          },
+          "description": "Laboratory found."
+        }
+        }, "500": {
+          "description": "Error on stored laboratories!"
+        }
+      }
+    }
+    },
+
+    "/api/laboratory/deleteBatch":{
+      "post": {
+        "tags":["Laboratory"],
+        "summary": "Delete laboratories in batch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Laboratory information.",
+            "required": true,
+            "type": "array",
+            "items":{
+              "type":"object",
+              "properties":
+              {
+                "ids":
+              {
+                "type": "array",
+                "items":{
+                  "type":"string",
+                  "example": "asdasd-23423-sd434sd-ffsdfsd"
+                }
+              }
+            }
+          }
+          }
+        ],
+      "responses": {
+        "200": {
+          "schema": {
+            "type":"object",
+            "properties": {
+              "response": {
+                "type": "string",
+                "example": "Laboratories deleted successfully!"
+              }
+          },
+          "description": "Laboratory found."
+        }
+        }, "500": {
+          "description": "Error on delete laboratories!"
+        }
+      }
+    }
+    },
+
+    "/api/laboratory/updateBatch":{
+      "post": {
+        "tags":["Laboratory"],
+        "summary": "Update laboratories in batch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Laboratory information.",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/LaboratoryArrayBatch"
+              }
+          }
+        ],
+      "responses": {
+        "200": {
+          "schema": {
+            "type":"object",
+            "properties": {
+              "response": {
+                "type": "string",
+                "example": "Laboratories updated successfully!"
+              }
+          },
+          "description": "Laboratory found."
+        }
+        }, "500": {
+          "description": "Error updating laboratories!"
+        }
+      }
+    }
+    },
+
+
+    "/api/laboratory/{id}":{
+      "delete": {
+        "tags":["Laboratory"],
+        "summary": "Delete a specific laboratory",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Laboratory Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Laboratory deleted successfully"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        
+        }
+      }
+
+    },
+
+    "/api/laboratory/{id}/":{
+      "put": {
+        "tags":["Laboratory"],
+        "summary": "Update a specific laboratory",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "Laboratory Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Laboratory updated successfully"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        
+        }
+      }
+
+    },
+  
+    "/api/association":{
+      "get": {
+        "tags":["Association"],
+        "summary": "Get all associations",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+       "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AssociationArray"
+            },
+            "description": "Association found."
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+
+    "/api/association/save":{
+      "post": {
+        "tags":["Association"],
+        "summary": "Register a new association between actives laboratories and exams",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+         "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Laboratory information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Association"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AssociationArray"
+            },
+            "description": "Exam linked successfully!"
+          },
+          "400": {
+            "description": "Laboratory don't registered! or Exam already linked with this laboratory!"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/association/{id}":{
+      "delete": {
+        "tags":["Association"],
+        "summary": "Delete a specific laboratory",
+        "description": "",
+        "produces": [
+          "application/json"
+        ], 
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "Association Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Association deleted successfully"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        
+        }
+      }
+
+    }
+    
+
+  },"definitions": 
+  {
+
+    "ExamArray": {
+      "type": "array",
+      "items":{
+        "type":"object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "asdasd-23423-sd434sd-ffsdfsd"
+          },
+          "name": {
+            "type": "string",
+            "example": "Exam Name"
+          },
+          "type": {
+            "type": "enum",
+            "example": "Image or Clinic or Analysis"
+          },
+          "status": {
+            "type": "enum",
+            "example": "Active or Inactive"
+          }
+        },"required": [
+          "name",
+          "type",
+          "status"
+        ],
+        "xml": {
+          "name": "ExamArray"
+        }
+      }
+    },
+
+    "ExamArrayBatch": {
+      "type": "array",
+      "items":{
+        "type":"object",
+        "properties":
+        {
+          "exams":
+        {
+          "type": "array",
+          "items":{
+            "type":"object",
+              "properties":{
+                "_id": {
+                  "type": "string",
+                  "example": "asdasd-23423-sd434sd-ffsdfsd"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Exam Name"
+                },
+                "type": {
+                  "type": "enum",
+                  "example": "Image or Clinic or Analysis"
+                },
+                "status": {
+                  "type": "enum",
+                  "example": "Active or Inactive"
+                }
+              }
+            }
+        }
+        },"required": [
+          "name",
+          "type",
+          "status"
+        ],
+        "xml": {
+          "name": "ExamArray"
+        }
+      }
+    },
+
+    "Exam": {
+      "type":"object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Exam Name"
+        },
+        "type": {
+          "type": "enum",
+          "example": "Image or Clinic or Analysis"
+        },
+        "status": {
+          "type": "enum",
+          "example": "Active or Inactive"
+        }
+      },"required": [
+        "name",
+        "type",
+        "status"
+      ],
+      "xml": {
+        "name": "ExamArray"
+      }
+    },
+
+    "LaboratoryArray": {
+      "type": "array",
+      "items":{
+        "type":"object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "asdasd-23423-sd434sd-ffsdfsd"
+          },
+          "name": {
+            "type": "string",
+            "example": "Laboratory Name"
+          },
+          "address": {
+            "type": "string",
+            "example": "Address laboratory"
+          },
+          "status": {
+            "type": "enum",
+            "example": "Active or Inactive"
+          }
+        },"required": [
+          "name",
+          "address",
+          "status"
+        ],
+        "xml": {
+          "name": "LaboratoryArray"
+        }
+      }
+    },
+
+    "LaboratoryArrayBatch": {
+      "type": "array",
+      "items":{
+        "type":"object",
+        "properties":
+        {
+          "laboratories":
+        {
+          "type": "array",
+          "items":{
+            "type":"object",
+              "properties":{
+                "_id": {
+                  "type": "string",
+                  "example": "asdasd-23423-sd434sd-ffsdfsd"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Laboratory Name"
+                },
+                "adddress": {
+                  "type": "string",
+                  "example": "Laboratory address"
+                },
+                "status": {
+                  "type": "enum",
+                  "example": "Active or Inactive"
+                }
+              }
+            }
+        }
+        },"required": [
+          "name",
+          "address",
+          "status"
+        ],
+        "xml": {
+          "name": "ExamArray"
+        }
+      }
+    },
+
+    "Laboratory": {
+      "type":"object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Laboratory Name"
+        },
+        "address": {
+          "type": "string",
+          "example": "Laboratory Address"
+        },
+        "status": {
+          "type": "enum",
+          "example": "Active or Inactive"
+        }
+      },"required": [
+        "name",
+        "address",
+        "status"
+      ],
+      "xml": {
+        "name": "ExamArray"
+      }
+    },
+
+    "AssociationArray": {
+      "type": "array",
+      "items":{
+        "type":"object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "asdasd-23423-sd434sd-ffsdfsd"
+          },
+          "idLaboratory": {
+            "type": "string",
+            "example": "asdasd-23423-sd434sd-ffsdfsd"
+          },
+          "idExam": {
+            "type": "enum",
+            "example": "asdasd-23423-sd434sd-ffsdfsd"
+          }
+        },
+        "xml": {
+          "name": "AssociationArray"
+        }
+      }
+    },
+
+    "Association": {
+      "type":"object",
+      "properties": {
+        "idLaboratory": {
+          "type": "string",
+          "example": "asdasd-23423-sd434sd-ffsdfsd"
+        },
+        "idExam": {
+          "type": "enum",
+          "example": "asdasd-23423-sd434sd-ffsdfsd"
+        }
+      },"required": [
+        "idLaboratory",
+        "idExam"
+      ],
+      "xml": {
+        "name": "Association"
+      }
+    }
+
+
+  
+  }
 }
