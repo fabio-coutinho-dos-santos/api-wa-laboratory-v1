@@ -1,5 +1,6 @@
 const Laboratory = require("./laboratory")
 const lodash = require("lodash")
+const HttpStatusCodes = require("../../Untils/HttpStatusCodes")
 
 Laboratory.methods(["get","post","put","delete"])
 Laboratory.updateOptions({new:true, runValidators: true}) //necessário para retornar sempre o novo objeto e tambem validar os dados no método put
@@ -11,7 +12,7 @@ function sendErrorsOrNext(req, resp, next){
 
 	if(bundle.errors){
 		var errors = parseErrors(bundle.errors)
-		resp.status(500).json({errors})
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors})
 	}else{
 		next()
 	}
@@ -28,13 +29,14 @@ function parseErrors(nodeRestfulErrors)
 }
 
 
+// route to get actives laboratories
 Laboratory.route("actives",(req,resp) => {
 	try{
 		Laboratory.aggregate([
 			{$match:{status:"Active"}}],
 		function (err, laboratoriesActives) {
 			if(err) {
-				return resp.status(500).json({errors:[err]})
+				return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 			}else{
 				resp.json((laboratoriesActives))
 			}
@@ -45,6 +47,8 @@ Laboratory.route("actives",(req,resp) => {
 	}
 })
 
+// ================================================== Functions to remove laboratory, chaged your status =============================================================
+
 Laboratory.route("remove",(req,resp) => {
 	try{
 		const idLaboratory = req.body.idLaboratory
@@ -54,20 +58,20 @@ Laboratory.route("remove",(req,resp) => {
 					{ _id: idLaboratory },
 					{ $set: { "status": "Inactive" } },(err)=>{
 						if(err) {
-							resp.status(500).json({errors:[err]})
+							resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 						}
 						else{
-							resp.status(200).json({response:["Laboratório removido com sucesso!"]})
+							resp.status(HttpStatusCodes.code.SUCCESS).json({response:["Laboratory removed successfully!"]})
 						}
 					}
 				)
 			}else{
-				resp.status(500).json({errors:["Campo vazio!"]})
+				resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:["Blank field!"]})
 			}
 		})
 	}
 	catch(e){
-		resp.status(500).json([{errors:"Erro ao remover laboratório!"}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on removing laboratorry!"}])
 	}
 })
 
@@ -81,6 +85,10 @@ let validateFieldBlanc = (idLaboratory) =>{
 	})
 }
 
+// =================================================================================================================================================================
+
+
+// ========================================================= routes to execute functions on batch registers ==================================================
 
 Laboratory.route("saveBatch",(req,resp)=>{
 
@@ -93,16 +101,16 @@ Laboratory.route("saveBatch",(req,resp)=>{
 			let laboratory = new Laboratory(laboratories[i])
 			laboratory.save((err)=>{
 				if(err){
-					return resp.status(500).json({errors:[err]})
+					return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 				}
 				if(i == laboratories.length-1){
-					resp.status(200).json({response:["Laboratories stored successfully!"]})
+					resp.status(HttpStatusCodes.code.SUCCESS).json({response:["Laboratories stored successfully!"]})
 				}
 			})
 		} 
 
 	}catch(e){
-		resp.status(500).json([{errors:"Error on stored Laboratories!" + e}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error storing Laboratories!" + e}])
 	}
 })
 
@@ -116,17 +124,17 @@ Laboratory.route("deleteBatch",(req,resp)=>{
 			Laboratory.find({_id:ids[i]}).remove((err,exam)=>{
 				cont += exam.deletedCount
 				if(err){
-					return resp.status(500).json({errors:[err]})
+					return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 				}else{
 					if(i == ids.length-1){
-						resp.status(200).json({response:[cont+" laboratories deleted successfully!"]})
+						resp.status(HttpStatusCodes.code.SUCCESS).json({response:[cont+" laboratories deleted successfully!"]})
 					}
 				}
 			})
 		} 
 
 	}catch(e){
-		resp.status(500).json([{errors:"Error on stored laboratories!" + e}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error deleting laboratories!" + e}])
 	}
 })
 
@@ -142,11 +150,11 @@ Laboratory.route("updateBatch",(req,resp)=>{
 				{ $set: { "status": laboratories[i].status , "address":laboratories[i].address, "name":laboratories[i].name} 
 				},(err)=>{
 					if(err) {
-						resp.status(500).json({errors:[err]})
+						resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 					}
 					else{
 						if(i == laboratories.length-1){
-							resp.status(200).json({response:["Laboratories updated successfully!"]})
+							resp.status(HttpStatusCodes.code.SUCCESS).json({response:["Laboratories updated successfully!"]})
 						}
 					}
 				}
@@ -154,8 +162,11 @@ Laboratory.route("updateBatch",(req,resp)=>{
 		} 
 
 	}catch(e){
-		resp.status(500).json([{errors:"Error on stored Laboratories!" + e}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on updating Laboratories!" + e}])
 	}
 })
+
+// =================================================================================================================================================================
+
 
 module.exports = Laboratory

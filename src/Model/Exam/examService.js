@@ -6,7 +6,7 @@ const HttpStatusCodes = require("../../Untils/HttpStatusCodes")
 
 
 Exam.methods(["get","post","put","delete"])
-Exam.updateOptions({new:true, runValidators: true}) //necessário para retornar sempre o novo objeto e tambem validar os dados no método put
+Exam.updateOptions({new:true, runValidators: true})
 
 Exam.after("post",sendErrorsOrNext).after("put",sendErrorsOrNext)
 
@@ -50,7 +50,7 @@ Exam.route("actives",(req,resp) => {
 })
 
 
-// ================================================================= Functions to remove exam ==================================================================
+// ================================================== Functions to remove exam, chaged your status =============================================================
 
 Exam.route("remove",(req,resp) => {
 	try{
@@ -153,6 +153,9 @@ function getAllLaboratoryes(resp){
 // =============================================================================================================================================================
 
 
+// ========================================================= routes to execute functions on batch registers ==================================================
+
+
 //route to save a batch of exams
 Exam.route("saveBatch",(req,resp)=>{
 
@@ -199,7 +202,7 @@ Exam.route("deleteBatch",(req,resp)=>{
 		} 
 
 	}catch(e){
-		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on deleted exams!" + e}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error deleting exams!" + e}])
 	}
 })
 
@@ -230,6 +233,8 @@ Exam.route("updateBatch",(req,resp)=>{
 		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error updating exams!" + e}])
 	}
 })
+
+// =============================================================================================================================================================
 
 
 module.exports = Exam

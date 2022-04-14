@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const request = require("supertest")
+const HttpStatusCodes = require("../../Untils/HttpStatusCodes")
 const URL_TEST = "localhost:3000"
 
 // =================================================================== Test Acives Route ==================================================================================
@@ -8,7 +9,7 @@ test( `Test Get list actives Laboratories ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.get("/api/laboratory/actives")
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body).toBeInstanceOf(Array)
 
 		})
@@ -23,7 +24,7 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.get("/api/laboratory")
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body).toBeInstanceOf(Array)
 		})
 })
@@ -43,7 +44,7 @@ test( `Test PUT Laboratory with id stored ${URL_TEST}`,()=>{
 			"status": "Active"
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body.name).toBe("Test2")
 			expect(response.body.address).toBe("Test,Test2")
 			expect(response.body.status).toBe("Active")
@@ -60,7 +61,7 @@ test( `Test PUT laboratory field status wrong ${URL_TEST}`,()=>{
 			"status": "Actives"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -73,7 +74,7 @@ test( `Test PUT Laboratory with false id ${URL_TEST}`,()=>{
 			"status": "Active"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -89,7 +90,7 @@ test( `Test Laboratory chage status to inactive with empty field ${URL_TEST}`,()
 			idLaboratory:"",
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -100,8 +101,8 @@ test( `Test Laboratory chage status to inactive correctly ${URL_TEST}`,()=>{
 			idLaboratory:"6242254f1677ae0543d2ac28",
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
-			expect(response.body.response[0]).toBe("Laboratório removido com sucesso!")
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
+			expect(response.body.response[0]).toBe("Laboratory removed successfully!")
 		})
 })
 
@@ -120,7 +121,7 @@ test( `Test Post Laboratory Fields empty ${URL_TEST}`,()=>{
 			status:"Inactive"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -133,7 +134,7 @@ test( `Test Post Laboratory Field address empty ${URL_TEST}`,()=>{
 			status:"Inactive"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -146,7 +147,7 @@ test( `Test Post Laboratory Field name empty ${URL_TEST}`,()=>{
 			status:"Inactive"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -160,7 +161,7 @@ test( `Test Post Laboratory Field status not Active or Inactive empty ${URL_TEST
 			status:"Inact"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -196,7 +197,7 @@ test( `Test Post batch laboratories correctly ${URL_TEST}`,()=>{
 			}]
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body.response[0]).toBe("Laboratories stored successfully!")
 		})
 })
@@ -212,7 +213,7 @@ test( `Test delete batch laboratories correctly ${URL_TEST}`,()=>{
 			]
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 		})
 })
 
@@ -233,7 +234,7 @@ test( `Test update batch laboratories correctly ${URL_TEST}`,()=>{
 			}]
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 		})
 })
 
