@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const request = require("supertest")
+const HttpStatusCodes = require("../../Untils/HttpStatusCodes")
 const URL_TEST = "localhost:3000"
 
 
@@ -7,7 +8,7 @@ test( `Test get all exams Exam - ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.get("/api/exam")
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body).toBeInstanceOf(Array)
 		})
 })
@@ -20,7 +21,7 @@ test( `Test Get list actives Exams ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.get("/api/exam/actives")
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body).toBeInstanceOf(Array)
 
 		})
@@ -38,7 +39,7 @@ test( `Test exam chage status to inactive with empty field ${URL_TEST}`,()=>{
 			idExam:"",
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -49,8 +50,8 @@ test( `Test exam chage status to inactive correctly ${URL_TEST}`,()=>{
 			idExam:"6244d5508571c005beaee5f2",
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
-			expect(response.body.response[0]).toBe("Exame removido com sucesso!")
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
+			expect(response.body.response[0]).toBe("Exam removed successfully")
 		})
 })
 
@@ -70,7 +71,7 @@ test( `Test PUT exam with id stored ${URL_TEST}`,()=>{
 			"status": "Active"
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body.name).toBe("Exam Test")
 			expect(response.body.type).toBe("Clinic")
 			expect(response.body.status).toBe("Active")
@@ -86,7 +87,7 @@ test( `Test PUT exam field type wrong ${URL_TEST}`,()=>{
 			"status": "Active"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -99,7 +100,7 @@ test( `Test PUT exam field status wrong ${URL_TEST}`,()=>{
 			"status": "Actives"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -113,7 +114,7 @@ test( `Test PUT exam with false id ${URL_TEST}`,()=>{
 			"status": "Active"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -131,7 +132,7 @@ test( `Test Post exam Field name empty ${URL_TEST}`,()=>{
 			status:"Inactive"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -144,7 +145,7 @@ test( `Test Post exam Field address empty ${URL_TEST}`,()=>{
 			status:"Inactive"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -157,7 +158,7 @@ test( `Test Post exam Field status empty ${URL_TEST}`,()=>{
 			status:""
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -171,7 +172,7 @@ test( `Test Post exam Field status not Active or Inactive ${URL_TEST}`,()=>{
 			status:"Inact"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -184,7 +185,7 @@ test( `Test Post exam Field type different od Image, Clinic and Analysis ${URL_T
 			status:"Inact"
 		})
 		.then(response => {
-			expect(response.status).toBe(500)
+			expect(response.status).toBe(HttpStatusCodes.code.INTERNAL_SERVER)
 		})
 })
 
@@ -220,7 +221,7 @@ test( `Test Post batch exams correctly ${URL_TEST}`,()=>{
 			}]
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body.response[0]).toBe("Exams stored successfully!")
 		})
 })
@@ -236,7 +237,7 @@ test( `Test delet batch exams correctly ${URL_TEST}`,()=>{
 			]
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 		})
 })
 
@@ -257,7 +258,7 @@ test( `Test update batch laboratories correctly ${URL_TEST}`,()=>{
 			}]
 		})
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 		})
 })
 
@@ -268,7 +269,7 @@ test( `Test route to get laboratories associated with a exam by exam name ${URL_
 	return request (URL_TEST)
 		.get("/api/exam/getActivesByName?name=Exam Test2")
 		.then(response => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body).toBeInstanceOf(Array)
 		})
 })

@@ -2,6 +2,7 @@ const Exam = require("./exam")
 const lodash = require("lodash")
 const Association = require("../Association/Association")
 const Laboratory = require("../Laboratory/laboratory")
+const HttpStatusCodes = require("../../Untils/HttpStatusCodes")
 
 
 Exam.methods(["get","post","put","delete"])
@@ -14,7 +15,7 @@ function sendErrorsOrNext(req, resp, next){
 
 	if(bundle.errors){
 		var errors = parseErrors(bundle.errors)
-		resp.status(500).json({errors})
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors})
 	}else{
 		next()
 	}
@@ -37,14 +38,14 @@ Exam.route("actives",(req,resp) => {
 			{$match:{status:"Active"}}],
 		function (err, examActives) {
 			if(err) {
-				return resp.status(500).json({errors:[err]})
+				return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 			}else{
 				resp.json((examActives))
 			}
 		})
 	}
 	catch(e){
-		resp.status(500).json([{errors:"Error on get actives exams!"}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on get actives exams!"}])
 	}
 })
 
@@ -60,20 +61,20 @@ Exam.route("remove",(req,resp) => {
 					{ _id: idExam },
 					{ $set: { "status": "Inactive" } },(err)=>{
 						if(err) {
-							resp.status(500).json({errors:[err]})
+							resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 						}
 						else{
-							resp.status(200).json({response:["Exame removido com sucesso!"]})
+							resp.status(HttpStatusCodes.code.SUCCESS).json({response:["Exam removed successfully"]})
 						}
 					}
 				)
 			}else{
-				resp.status(500).json({errors:["Campo vazio!"]})
+				resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:["Blank fiels!"]})
 			}
 		})
 	}
 	catch(e){
-		resp.status(500).json([{errors:"Erro ao remover exame!"}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on to remove exam!"}])
 	}
 })
 
@@ -93,41 +94,45 @@ let validateFieldBlanc = (idExam) =>{
 
 //
 Exam.route("getActivesByName",(req,resp)=>{
-	const name = req.query.name
-	console.log(name)
+	try{
+		const name = req.query.name
+		console.log(name)
 
-	Exam.findOne({name:name},function(err,exam){
-		if(err) {
-			return resp.status(500).json({errors:[err]})
-		}else{
-			if(!exam){
-				return resp.status(500).json({errors:["Exame não encontrado!"]})
-			}
-			else{
-				Association.aggregate([
-					{$match:
+		Exam.findOne({name:name},function(err,exam){
+			if(err) {
+				return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
+			}else{
+				if(!exam){
+					return resp.status(HttpStatusCodes.code.BAD_REQUEST).json({errors:["Exam don't found"]})
+				}
+				else{
+					Association.aggregate([
+						{$match:
 						{idExam:exam.id}}
-				],(err,associations)=>{
-					if(err) {
-						return resp.status(500).json({errors:[err]})
-					}else{
-						let arrayLaboratories=[]
-						getAllLaboratoryes(resp).then((laboratories)=>{
-							laboratories.forEach(lab => {
-								associations.forEach(assocations=> {
-									if(lab._id == assocations.idLaboratory){
-										arrayLaboratories.push(lab)
-									}
+					],(err,associations)=>{
+						if(err) {
+							return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
+						}else{
+							let arrayLaboratories=[]
+							getAllLaboratoryes(resp).then((laboratories)=>{
+								laboratories.forEach(lab => {
+									associations.forEach(assocations=> {
+										if(lab._id == assocations.idLaboratory){
+											arrayLaboratories.push(lab)
+										}
+									})
 								})
+								resp.json(arrayLaboratories)
 							})
-							resp.json(arrayLaboratories)
-						})
-					}
-				})
+						}
+					})
 
+				}
 			}
-		}
-	})
+		})
+	}catch(e){
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on to get laboratories that have linked with this exam!"}])
+	}
 
 })
 
@@ -136,7 +141,7 @@ function getAllLaboratoryes(resp){
 	return new Promise(resolve =>{
 		Laboratory.find({},function(err,laboratories){
 			if(err) {
-				return resp.status(500).json({errors:[err]})
+				return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 			}else{
 				resolve(laboratories)
 			}
@@ -160,16 +165,16 @@ Exam.route("saveBatch",(req,resp)=>{
 			let exam = new Exam(exams[i])
 			exam.save((err)=>{
 				if(err){
-					return resp.status(500).json({errors:[err]})
+					return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 				}
 				if(i == exams.length-1){
-					resp.status(200).json({response:["Exams stored successfully!"]})
+					resp.status(HttpStatusCodes.code.SUCCESS).json({response:["Exams stored successfully!"]})
 				}
 			})
 		} 
 
 	}catch(e){
-		resp.status(500).json([{errors:"Error on stored exams!" + e}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on stored exams!" + e}])
 	}
 })
 
@@ -184,17 +189,17 @@ Exam.route("deleteBatch",(req,resp)=>{
 			Exam.find({_id:ids[i]}).remove((err,exam)=>{
 				cont += exam.deletedCount
 				if(err){
-					return resp.status(500).json({errors:[err]})
+					return resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 				}else{
 					if(i == ids.length-1){
-						resp.status(200).json({response:[cont+" exams deleted successfully!"]})
+						resp.status(HttpStatusCodes.code.SUCCESS).json({response:[cont+" exams deleted successfully!"]})
 					}
 				}
 			})
 		} 
 
 	}catch(e){
-		resp.status(500).json([{errors:"Error on deleted exams!" + e}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on deleted exams!" + e}])
 	}
 })
 
@@ -210,11 +215,11 @@ Exam.route("updateBatch",(req,resp)=>{
 				{ $set: { "status": exams[i].status , "type":exams[i].type, "name":exams[i].name} 
 				},(err)=>{
 					if(err) {
-						resp.status(500).json({errors:[err]})
+						resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 					}
 					else{
 						if(i == exams.length-1){
-							resp.status(200).json({response:["Exams updated successfully!"]})
+							resp.status(HttpStatusCodes.code.SUCCESS).json({response:["Exams updated successfully!"]})
 						}
 					}
 				}
@@ -222,7 +227,7 @@ Exam.route("updateBatch",(req,resp)=>{
 		} 
 
 	}catch(e){
-		resp.status(500).json([{errors:"Error on stored exams!" + e}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error updating exams!" + e}])
 	}
 })
 
