@@ -1,0 +1,36 @@
+#!/usr/bin/env groovy
+pipeline{
+    agent any
+
+    stages {
+       
+    //    stage('Prune Docker data'){
+    //        steps {
+    //            sh 'docker system prune -a --volumes -f'
+    //            sh 'docker network create net-template'
+    //        }
+    //    }
+    //
+
+       stage('Build'){
+           steps{
+               sh 'docker-compose up -d'
+           }
+       }
+
+
+       stage('Test'){
+           steps{
+                sh 'docker exec api-wa npm test'
+           }
+       }
+
+        stage('Deploy'){
+           steps{
+               sh 'echo Deploy Made'
+           }
+       }
+   }
+
+
+}
