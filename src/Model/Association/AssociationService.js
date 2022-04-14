@@ -2,6 +2,7 @@ const Association = require("./Association")
 const Exam = require("../Exam/exam")
 const Laboratory = require("../Laboratory/laboratory")
 const lodash = require("lodash")
+const HttpStatusCodes = require("../../Untils/HttpStatusCodes")
 
 Association.methods(["get","put","delete"])
 Association.updateOptions({new:true, runValidators: true}) //necessário para retornar sempre o novo objeto e tambem validar os dados no método put
@@ -13,7 +14,7 @@ function sendErrorsOrNext(req, resp, next){
 
 	if(bundle.errors){
 		var errors = parseErrors(bundle.errors)
-		resp.status(500).json({errors})
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors})
 	}else{
 		next()
 	}
@@ -45,9 +46,9 @@ Association.route("connect",(req,resp) => {
 				],
 				function (err, exam) {
 					if(err) {
-						resp.status(500).json({errors:[err]})
+						resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 					}else if(exam == ""){
-						resp.status(501).json({errors:["Este exame não está cadastrado!"]})
+						resp.status(HttpStatusCodes.code.BAD_REQUEST).json({errors:["Exam don't registered!"]})
 					}else{
 						Laboratory.aggregate([
 							{$match:{status:"Active"}},
@@ -55,22 +56,22 @@ Association.route("connect",(req,resp) => {
 						],
 						function (err, exam) {
 							if(err) {
-								resp.status(500).json({errors:[err]})
+								resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 							}else if(exam == ""){
-								resp.status(501).json({errors:["Este laboratório não está cadastrado!"]})
+								resp.status(HttpStatusCodes.code.BAD_REQUEST).json({errors:["Lboratory don't registered!"]})
 							}else{
 								let association = new Association({idExam:idExam,idLaboratory:idLaboratory})
 								checkIfThereAreAssociation(idExam,idLaboratory).then((response)=>{
 									if(!response){
 										association.save(err=>{
 											if(err){
-												resp.status(500).json({errors:[err]})
+												resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:[err]})
 											}else{
-												resp.status(201).json({Response:["Exame cadastrado com sucesso!"]})
+												resp.status(HttpStatusCodes.code.SUCCESS).json({Response:["Exam registered successfully!"]})
 											}
 										})
 									}else{
-										resp.status(501).json({errors:["Este exame ja ésta vinculado a este laboratório!"]})
+										resp.status(HttpStatusCodes.code.BAD_REQUEST).json({errors:["Exam already linked with this laboratory!"]})
 									}
 								})
 						
@@ -79,11 +80,11 @@ Association.route("connect",(req,resp) => {
 					}
 				})
 			}else{
-				resp.status(500).json({errors:["Campos vazios!"]})
+				resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json({errors:["Blank fields!"]})
 			}
 		})
 	}catch(e){
-		resp.status(500).json([{errors:"Erro ao vincular exame ao laboratório!"}])
+		resp.status(HttpStatusCodes.code.INTERNAL_SERVER).json([{errors:"Error on to link exam!"}])
 	}
 
 })
