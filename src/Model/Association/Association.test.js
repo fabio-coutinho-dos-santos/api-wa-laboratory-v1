@@ -50,15 +50,15 @@ test( `Test Post Association with idLaboratory blank - ${URL_TEST}`,()=>{
 })
 
 
-test( `Test Post Association that there are - ${URL_TEST}`,()=>{
-	return request (URL_TEST)
-		.post("/api/association/connect")
-		.send({
-			idExam:"62570bab947c790443126713",
-			idLaboratory:"62570b372b11f00434150d5a",
-		})
-		.then(response => {
-			expect(response.status).toBe(HttpStatusCodes.code.BAD_REQUEST)
-			expect(response.body.errors[0]).toBe("Exam already linked with this laboratory!")
-		})
-})
+// test( `Test Post Association that there are - ${URL_TEST}`,()=>{
+// 	return request (URL_TEST)
+// 		.post("/api/association/connect")
+// 		.send({
+// 			idExam:"62570bab947c790443126713",
+// 			idLaboratory:"62570b372b11f00434150d5a",
+// 		})
+// 		.then(response => {
+// 			expect(response.status).toBe(HttpStatusCodes.code.BAD_REQUEST)
+// 			expect(response.body.errors[0]).toBe("Exam already linked with this laboratory!")
+// 		})
+// })

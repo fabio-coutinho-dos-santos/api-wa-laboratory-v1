@@ -32,7 +32,7 @@ test( `Test Get list actives Exams ${URL_TEST}`,()=>{
 // =================================================================== Test Remove Route ==================================================================================
 
 
-test( `Test exam chage status to inactive with empty field ${URL_TEST}`,()=>{
+test( `Test exam change status to inactive with empty field ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/exam/remove")
 		.send({
@@ -43,11 +43,11 @@ test( `Test exam chage status to inactive with empty field ${URL_TEST}`,()=>{
 		})
 })
 
-test( `Test exam chage status to inactive correctly ${URL_TEST}`,()=>{
+test( `Test exam change status to inactive correctly ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/exam/remove")
 		.send({
-			idExam:"6244d5508571c005beaee5f2",
+			idExam:"625ca331295a8b009736c807",
 		})
 		.then(response => {
 			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
@@ -64,7 +64,7 @@ test( `Test exam chage status to inactive correctly ${URL_TEST}`,()=>{
 
 test( `Test PUT exam with id stored ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/exam/62570bab947c790443126713")
+		.put("/api/exam/625ca331295a8b009736c807")
 		.send({
 			"name": "Exam Test",
 			"type": "Clinic",
@@ -80,7 +80,7 @@ test( `Test PUT exam with id stored ${URL_TEST}`,()=>{
 
 test( `Test PUT exam field type wrong ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/exam/6244d5508571c005beaee5f2")
+		.put("/api/exam/625ca331295a8b009736c807")
 		.send({
 			"name": "Exam Test",
 			"type": "Clinica",
@@ -93,7 +93,7 @@ test( `Test PUT exam field type wrong ${URL_TEST}`,()=>{
 
 test( `Test PUT exam field status wrong ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/exam/6244d5508571c005beaee5f2")
+		.put("/api/exam/625ca331295a8b009736c807")
 		.send({
 			"name": "Exam Test",
 			"type": "Clinica",
@@ -227,31 +227,31 @@ test( `Test Post batch exams correctly ${URL_TEST}`,()=>{
 })
 
 
-test( `Test delet batch exams correctly ${URL_TEST}`,()=>{
-	return request (URL_TEST)
-		.post("/api/exam/deleteBatch")
-		.send({
-			ids:[
-				"624227d41957aa05b389b99a",
-				"624227d41957aa05b389b99a"
-			]
-		})
-		.then(response => {
-			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
-		})
-})
+// test( `Test delet batch exams correctly ${URL_TEST}`,()=>{
+// 	return request (URL_TEST)
+// 		.post("/api/exam/deleteBatch")
+// 		.send({
+// 			ids:[
+// 				"625ca331295a8b009736c807",
+// 				"625ca534295a8b009736c811"
+// 			]
+// 		})
+// 		.then(response => {
+// 			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
+// 		})
+// })
 
 test( `Test update batch laboratories correctly ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/exam/updateBatch")
 		.send({
 			exams:[{
-				_id:"62570bab947c790443126713",
-				name:"Test",
+				_id:"625ca331295a8b009736c807",
+				name:"Exam Test2",
 				type:"Image",
 				status:"Active"
 			},{
-				_id:"62570bab947c790443126713",
+				_id:"625ca534295a8b009736c811",
 				name:"Test",
 				type:"Image",
 				status:"Active"

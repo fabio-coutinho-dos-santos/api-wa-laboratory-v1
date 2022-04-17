@@ -30,9 +30,9 @@ services:
     networks:
         - net-wa
      #============ comment when to push to master branch ===============
-    # volumes:
-    #   - .:/usr/src/app:rw
-    # working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app:rw
+    working_dir: /usr/src/app
     #==================================================================
     command: bash -c "npm start" 
     logging:

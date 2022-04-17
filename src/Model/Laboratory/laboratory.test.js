@@ -37,7 +37,7 @@ test( `Test Laboratory ${URL_TEST}`,()=>{
 
 test( `Test PUT Laboratory with id stored ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/laboratory/62570b3f2b11f00434150d5c")
+		.put("/api/laboratory/625ca37e295a8b009736c809")
 		.send({
 			"name": "Test2",
 			"address": "Test,Test2",
@@ -54,7 +54,7 @@ test( `Test PUT Laboratory with id stored ${URL_TEST}`,()=>{
 
 test( `Test PUT laboratory field status wrong ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.put("/api/laboratory/6244d5508571c005beaee5f2")
+		.put("/api/laboratory/625ca37e295a8b009736c809")
 		.send({
 			"name": "laboratory Test",
 			"address": "test",
@@ -98,7 +98,7 @@ test( `Test Laboratory chage status to inactive correctly ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/laboratory/remove")
 		.send({
-			idLaboratory:"6242254f1677ae0543d2ac28",
+			idLaboratory:"625ca37e295a8b009736c809",
 		})
 		.then(response => {
 			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
@@ -203,31 +203,31 @@ test( `Test Post batch laboratories correctly ${URL_TEST}`,()=>{
 })
 
 
-test( `Test delete batch laboratories correctly ${URL_TEST}`,()=>{
-	return request (URL_TEST)
-		.post("/api/laboratory/deleteBatch")
-		.send({
-			ids:[
-				"624227d41957aa05b389b99a",
-				"624227d41957aa05b389b99a"
-			]
-		})
-		.then(response => {
-			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
-		})
-})
+// test( `Test delete batch laboratories correctly ${URL_TEST}`,()=>{
+// 	return request (URL_TEST)
+// 		.post("/api/laboratory/deleteBatch")
+// 		.send({
+// 			ids:[
+// 				"625ca37e295a8b009736c809",
+// 				"625ca5f4295a8b009736c815"
+// 			]
+// 		})
+// 		.then(response => {
+// 			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
+// 		})
+// })
 
 test( `Test update batch laboratories correctly ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/laboratory/updateBatch")
 		.send({
 			laboratories:[{
-				_id: "62570b372b11f00434150d5a",
+				_id: "625ca37e295a8b009736c809",
 				name:"Test",
 				address:"Test",
 				status:"Active"
 			},{
-				_id: "62570b3f2b11f00434150d5c",
+				_id: "625ca5f4295a8b009736c815",
 				name:"Test",
 				address:"Test",
 				status:"Active"
