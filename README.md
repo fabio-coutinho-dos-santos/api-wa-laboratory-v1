@@ -61,7 +61,7 @@ Para realizar o redirecionamento das rotas para o container que executa a aplica
 Foi elaborado um pipeline CI/CD utilizando jenkins para a automatizar o deploy da aplicação, entretanto não consegui realizar o deploy e todas as configurações na instância EC2 da AWS pois quando a pipeline era iniciada a instância travava (acredito que por limitações de recurso por ser o que a AWS oferece gratuitamente), conseguindo apenas simular este pipeline em localhost.
 
 
-##Execução 
+## Execução 
 - Para executar o projeto localmente deve-se seguir os seguintes passos:
  - Clonar o repositório
  - instalar o docker e docker-compose
