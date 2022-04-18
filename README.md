@@ -21,9 +21,9 @@ Api rest desenvolvida em javascript para gerenciar operações de laboratorios e
 Para realizar essa tarefas, a api foi elaborada obedecendo os padrões REST, manipulando e gerenciando dados por meio de requisições HTTP enviadas por um cliente.
 
  - Como banco de dados, foi utilizado o Mongo DB implemendo três collections:
-  - **Exams**, contendo os registros:
+  - **Exam**, contendo os registros:
     - name
-    - type ["Analysis","Image"]
+    - type ["Clinical","Image"]
     - status["Active","Inactive"]
   - **Laboratory**, contendo os registros:
     - name
@@ -33,11 +33,19 @@ Para realizar essa tarefas, a api foi elaborada obedecendo os padrões REST, man
     - idExam
     - idLaboratory
 
-  **Obs**:
+  **Obs**: os campos type em Exams e status em Exams e Laboratory são do tipo enum, reconhecendo apenas as strings que estão indicadas entre colchetes.
 
 **IMPORTANTE** como a aplicação é objeto de um teste, não foram implementado esquemas de perfis de usuário nem autenticação,
 
-Por meio da collection operations são gravadas as operações de credito e débito dos usuário para que posteriormente sejam calculados o saldo e os extratos delas.
+Por meio da collection association um exame é vinculado a um laboratório.
+Assim, toda vez que um exame é associado a um laboratório, é criado um registro na collection association contendo o _id do registro e os ids do laboratório e também do exame.
+
+
+Além das operações de CRUD convencionais, também fora implementadas as seguintes funcionalidades extras:
+ - Cadastro, Atualização e remoção em lotes nas collections Exam e Laboratory
+ - Endpoint que recebe um nome de um exame e retorna todos os laboratórios associados a ele.
+
+
 
 Como estratégia de implementação, uma rota foi elaborada isoladamente para calculo do saldo dos usuários. Essa rota recebe como parâmetros via GET HTTP, o id do usuário e retorna o saldo deste usuário. 
 
