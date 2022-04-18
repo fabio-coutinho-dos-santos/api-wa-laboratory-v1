@@ -27,7 +27,7 @@ test( `Test Post Association with blank fields - ${URL_TEST}`,()=>{
 
 test( `Test Post Association with idExam blank - ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.post("/api/association/connect")
+		.post("/api/association/save")
 		.send({
 			idExam:"",
 			idLaboratory:"624221b27bc05f01ce2c9ce0",
@@ -39,7 +39,7 @@ test( `Test Post Association with idExam blank - ${URL_TEST}`,()=>{
 
 test( `Test Post Association with idLaboratory blank - ${URL_TEST}`,()=>{
 	return request (URL_TEST)
-		.post("/api/association/connect")
+		.post("/api/association/save")
 		.send({
 			idExam:"6242280f11949e0615e9da33",
 			idLaboratory:"",

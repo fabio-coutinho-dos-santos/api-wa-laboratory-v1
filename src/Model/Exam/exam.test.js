@@ -176,7 +176,7 @@ test( `Test Post exam Field status not Active or Inactive ${URL_TEST}`,()=>{
 		})
 })
 
-test( `Test Post exam Field type different od Image, Clinic and Analysis ${URL_TEST}`,()=>{
+test( `Test Post exam Field type different od Image, Clinic ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/exam")
 		.send({

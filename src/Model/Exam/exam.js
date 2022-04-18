@@ -5,7 +5,7 @@ const examchema = new monggose.Schema({
 	name:{type:String,required:true},
 	type:{type:String,required:true,
 		enum: {
-			values:["Analysis","Clinic","Image"],
+			values:["Clinic","Image"],
 			message: "Field status must have Active or Inactive"
 		}
 	},
