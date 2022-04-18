@@ -5,11 +5,10 @@
     "title": "REST API - WA Laboratory",
     "description": ""
   },
-  "host": "localhost:3000",
+  "host": "ec2-15-228-47-50.sa-east-1.compute.amazonaws.com/",
   "basePath": "/",
   "schemes": [
-    "http",
-    "https"
+    "http"
   ],
   "consumes": [
     "application/json"
