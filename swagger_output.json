@@ -5,7 +5,7 @@
     "title": "REST API - WA Laboratory",
     "description": ""
   },
-  "host": "ec2-15-228-47-50.sa-east-1.compute.amazonaws.com/",
+  "host": "ec2-15-228-47-50.sa-east-1.compute.amazonaws.com",
   "basePath": "/",
   "schemes": [
     "http"
