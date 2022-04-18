@@ -67,13 +67,13 @@ test( `Test PUT exam with id stored ${URL_TEST}`,()=>{
 		.put("/api/exam/625ca331295a8b009736c807")
 		.send({
 			"name": "Exam Test",
-			"type": "Clinic",
+			"type": "Clinical",
 			"status": "Active"
 		})
 		.then(response => {
 			expect(response.status).toBe(HttpStatusCodes.code.SUCCESS)
 			expect(response.body.name).toBe("Exam Test")
-			expect(response.body.type).toBe("Clinic")
+			expect(response.body.type).toBe("Clinical")
 			expect(response.body.status).toBe("Active")
 		})
 })
@@ -83,7 +83,7 @@ test( `Test PUT exam field type wrong ${URL_TEST}`,()=>{
 		.put("/api/exam/625ca331295a8b009736c807")
 		.send({
 			"name": "Exam Test",
-			"type": "Clinica",
+			"type": "Clinical",
 			"status": "Active"
 		})
 		.then(response => {
@@ -96,7 +96,7 @@ test( `Test PUT exam field status wrong ${URL_TEST}`,()=>{
 		.put("/api/exam/625ca331295a8b009736c807")
 		.send({
 			"name": "Exam Test",
-			"type": "Clinica",
+			"type": "Clinical",
 			"status": "Actives"
 		})
 		.then(response => {
@@ -176,7 +176,7 @@ test( `Test Post exam Field status not Active or Inactive ${URL_TEST}`,()=>{
 		})
 })
 
-test( `Test Post exam Field type different od Image, Clinic ${URL_TEST}`,()=>{
+test( `Test Post exam Field type different od Image, Clinical ${URL_TEST}`,()=>{
 	return request (URL_TEST)
 		.post("/api/exam")
 		.send({

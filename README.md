@@ -1,5 +1,5 @@
 # API-REST
-Api rest desenvolvida para gerenciar operações de laboratorios e exames como objeto de teste técnico
+Api rest desenvolvida em javascript para gerenciar operações de laboratorios e exames como objeto de teste técnico
  
  ## Principais Elementos utilizados no desenvolvimento
  - node v10.14.0
@@ -23,7 +23,7 @@ Para realizar essa tarefas, a api foi elaborada obedecendo os padrões REST, man
  - Como banco de dados, foi utilizado o Mongo DB implemendo três collections:
   - **Exams**, contendo os registros:
     - name
-    - type ["Clinic","Image"]
+    - type ["Analysis","Image"]
     - status["Active","Inactive"]
   - **Laboratory**, contendo os registros:
     - name
@@ -33,10 +33,9 @@ Para realizar essa tarefas, a api foi elaborada obedecendo os padrões REST, man
     - idExam
     - idLaboratory
 
+  **Obs**:
 
-
-
-**IMPORTANTE** como a aplicação é objeto de um teste, não foram implementado esquemas de perfis de usuário, dessa forma, todos os usuários cadastrados possuem um único perfil e pode realizar quaisquer operação.
+**IMPORTANTE** como a aplicação é objeto de um teste, não foram implementado esquemas de perfis de usuário nem autenticação,
 
 Por meio da collection operations são gravadas as operações de credito e débito dos usuário para que posteriormente sejam calculados o saldo e os extratos delas.
 

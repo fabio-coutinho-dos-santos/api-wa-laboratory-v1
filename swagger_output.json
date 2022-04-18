@@ -788,7 +788,7 @@
           },
           "type": {
             "type": "enum",
-            "example": "Image or Clinic or Analysis"
+            "example": "Image or Clinical"
           },
           "status": {
             "type": "enum",
@@ -856,7 +856,7 @@
         },
         "type": {
           "type": "enum",
-          "example": "Image or Clinic or Analysis"
+          "example": "Image or Clinical"
         },
         "status": {
           "type": "enum",
